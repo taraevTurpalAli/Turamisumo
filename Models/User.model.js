@@ -17,7 +17,11 @@ const userSchema = mongoose.Schema({
         default: false
     },
     startData: String,
-    endData: String
+    endData: String,
+    room: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Room"
+    }
 });
 
 const User = mongoose.model('User', userSchema);
