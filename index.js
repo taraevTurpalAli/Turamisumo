@@ -10,6 +10,7 @@ const app = express();
 app.use(cors())
 app.use(require('morgan')('dev'));
 app.use(express.json());
+app.use(require("./routes/user.route.js"));
 
 mongoose
   .connect(process.env.MONGO_SERVER)
