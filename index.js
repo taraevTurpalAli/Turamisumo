@@ -12,7 +12,7 @@ app.use(require('morgan')('dev'));
 app.use(express.json());
 app.use(require('./routes/room.route'))
 app.use(require('./routes/product.route'))
-
+app.use(require("./routes/user.route.js"));
 
 mongoose
   .connect(process.env.MONGO_SERVER)
