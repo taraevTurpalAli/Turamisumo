@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const roomSchema = mongoose.Schema({
         number: Number,
+        price: Number,
         roomTypeId: {
             type: mongoose.SchemaTypes.ObjectId,
             ref: 'RoomType'

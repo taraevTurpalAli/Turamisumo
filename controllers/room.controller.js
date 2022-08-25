@@ -33,6 +33,7 @@ module.exports.roomController = {
             const setRoomTypeId = setRoomType[0]._id
             const setRoom = await Room.create({
                 number,
+                price,
                 roomTypeId: setRoomTypeId,
                 booking,
             })
