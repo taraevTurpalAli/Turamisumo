@@ -28,7 +28,7 @@ module.exports.roomController = {
     // },
     postRoom: async (req, res) => {
         try {
-            const { number, roomType, booking } = req.body
+            const { number, roomType, booking, price } = req.body
             const setRoomType = await RoomType.find({ name: roomType })
             const setRoomTypeId = setRoomType[0]._id
             const setRoom = await Room.create({
