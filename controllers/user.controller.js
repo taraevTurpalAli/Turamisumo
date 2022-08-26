@@ -3,21 +3,65 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { subscribe } = require("../routes/room.route.js");
+const RoomType = require("../Models/RoomType.model.js");
+const Room = require("../Models/Room.model.js");
 
 module.exports.userController = {
     addUser: async (req, res) => {
         try {
-            const { name, surname, phone, age, login, password, cash, room, startData, endData } = req.body;
+            const { name, surname, phone, age, login, password, startData, endData } = req.body;
+            const { roomType } = req.params
+
+            const setLogin = await User.findOne({
+                login
+            })
+
+            if (setLogin) {
+                return (res.json('Данный логин уже занят'))
+            }
 
             const hash = await bcrypt.hash(
                 password,
                 Number(process.env.ROUNDS)
             );
 
-            const setUser = await User.create({ name, surname, phone, age, login, password: hash, cash, room, startData, endData });
-
+            const setRoomType = await RoomType.findOne({name: roomType})
+            const setRoomTypeId = String(setRoomType._id)
+            const setRoomTypeCash = Number(setRoomType.price)
             
+            const setRooms = await Room.find({
+                roomTypeId: setRoomTypeId
+            })
+            
+            const setRoomsArr = setRooms.filter((el) => {
+                return (!el.booking)
+            })
 
+            const setRoom = setRoomsArr[0]
+
+            if (!setRoom) {
+                return (res.json('Номеры данного типа уже заняты'))
+            }
+
+            const setRoomId = String(setRoom._id)
+            
+            await Room.findByIdAndUpdate(setRoomId, {
+                booking: true
+            })
+            
+            const setUser = await User.create({ 
+                name, 
+                surname, 
+                phone, 
+                age, 
+                login, 
+                password: hash, 
+                cash: setRoomTypeCash,
+                room: setRoomId, 
+                startData, 
+                endData 
+            });
+            
             res.json(setUser);
         } catch (e) {
             res.json(e);
@@ -45,7 +89,8 @@ module.exports.userController = {
 
         const token = await jwt.sign(payload, process.env.SECRET_KEY, {
             expiresIn: "24h",
-        });
+        })
+        
 
         return res.json({
             token,
