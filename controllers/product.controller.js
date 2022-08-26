@@ -6,14 +6,28 @@ module.exports.productController = {
     postProduct: async (req, res) => {
         try {
             const { name, price, category } = req.body
+            
             const setProduct = await Product.create({
                 name,
                 price,
             })
-            if (true) {
+            const setCategory = await Category.find({ name: category })
+            
+            if (setCategory[0]) {
                 const setProductId = setProduct._id
-                const setCategory = await Category.find({ name: category })
                 const setCategoryId = setCategory[0]._id
+                await Category.findByIdAndUpdate(setCategoryId, {
+                    $push: {
+                        productId: setProductId
+                    }
+                })
+            } else {
+                const setCategory0 = await Category.create({
+                    name: category,
+                    productId: []
+                })
+                const setProductId = setProduct._id
+                const setCategoryId = setCategory0._id
                 await Category.findByIdAndUpdate(setCategoryId, {
                     $push: {
                         productId: setProductId
@@ -26,6 +40,55 @@ module.exports.productController = {
             res.json(e)
         }
     },
+
+    // deleteProduct: async (req, res) => {
+    //     try {
+    //         const { name } = req.params
+            
+    //         const setProduct = await Product.find({
+    //             name
+    //         })
+
+    //         const setCategory
+    //         const setCategory = await Category.find({ name:  })
+            
+    //         const setProductId = setProduct._id
+    //         const setCategoryId = setCategory[0]._id
+    //         await Category.findByIdAndUpdate(setCategoryId, {
+    //             $push: {
+    //                 productId: setProductId
+    //             }
+    //         })
+
+
+
+            // if (setCategory[0]) {
+            //     const setProductId = setProduct._id
+            //     const setCategoryId = setCategory[0]._id
+            //     await Category.findByIdAndUpdate(setCategoryId, {
+            //         $push: {
+            //             productId: setProductId
+            //         }
+            //     })
+            // } else {
+            //     const setCategory0 = await Category.create({
+            //         name: category,
+            //         productId: []
+            //     })
+            //     const setProductId = setProduct._id
+            //     const setCategoryId = setCategory0._id
+            //     await Category.findByIdAndUpdate(setCategoryId, {
+            //         $push: {
+            //             productId: setProductId
+            //         }
+            //     })
+            // }
+            // res.json(setProduct)
+        // }
+    //     catch (e) {
+    //         res.json(e)
+    //     }
+    // },
 
 
 
