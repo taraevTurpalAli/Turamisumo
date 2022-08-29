@@ -5,11 +5,12 @@ const Product = require("../Models/Product.model")
 module.exports.productController = {
     postProduct: async (req, res) => {
         try {
-            const { name, price, category } = req.body
+            const { name, price, category, law } = req.body
             
             const setProduct = await Product.create({
                 name,
                 price,
+                law,
             })
             const setCategory = await Category.find({ name: category })
             
@@ -40,6 +41,49 @@ module.exports.productController = {
             res.json(e)
         }
     },
+    
+    // deleteProduct: async (req, res) => {
+    //     try {
+    //         const { name } = req.body
+            
+    //         const setProduct = await Product.findOne({
+    //             name
+    //         })
+    //         await Product.findByIdAndRemove(setProduct._id)
+    //         const setCategory = await Category.findOne({ name: setProduct.categoryId })
+    //         const newArr = setCategory.productId.map((el) => {
+
+    //         })
+    //         Category.findByIdAndUpdate(setCategory._id, {
+
+    //         })
+    //         if (setCategory[0]) {
+    //             const setProductId = setProduct._id
+    //             const setCategoryId = setCategory[0]._id
+    //             await Category.findByIdAndUpdate(setCategoryId, {
+    //                 $push: {
+    //                     productId: setProductId
+    //                 }
+    //             })
+    //         } else {
+    //             const setCategory0 = await Category.create({
+    //                 name: category,
+    //                 productId: []
+    //             })
+    //             const setProductId = setProduct._id
+    //             const setCategoryId = setCategory0._id
+    //             await Category.findByIdAndUpdate(setCategoryId, {
+    //                 $push: {
+    //                     productId: setProductId
+    //                 }
+    //             })
+    //         }
+    //         res.json(setProduct)
+    //     }
+    //     catch (e) {
+    //         res.json(e)
+    //     }
+    // },
 
     // deleteProduct: async (req, res) => {
     //     try {
