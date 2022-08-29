@@ -3,41 +3,6 @@ const RoomType = require('../Models/RoomType.model.js')
 const User = require('../models/User.model.js')
 
 module.exports.roomController = {
-    // bookingRoom: async (req, res) => {
-    //     try {
-    //         const { roomTypeId } = req.params
-    //         const { user } = req.body
-    //         const setUser = await User.find()
-    //         res.json(setRoom)
-    //     }
-    //     catch (e) {
-    //         res.json(e)
-    //     }
-    // },
-    // postAllRoom: async (req, res) => {
-    //     try {
-    //         // for (let i = 0; i < req.body.colv; i++) {
-    //         //     for (let j = 0; j < 4; j++) {
-    //         //         const { number, roomType, booking } = req.body
-    //         //         const setRoomType = await RoomType.find({ name: roomType })
-    //         //         const setRoomTypeId = setRoomType[0]._id
-    //         //         const setRoom = await Room.create({
-    //         //             number: (j * 15) + number + i,
-    //         //             roomTypeId: setRoomTypeId,
-    //         //             booking,
-    //         //         })
-    //         //     }
-    //         // }
-    //         const setDelete = await Room.find()
-    //         setDelete.forEach(async(el) => {
-    //             await Room.findByIdAndRemove(el._id)
-    //         })
-    //         res.json('AAAAAAAA_AAAAAAAAA+AA_A+A_)_A_AAAAA)_A)_APA_PAA}_}AA_+AA{}A_A+_A}A{+A_+AAAA')
-    //     }
-    //     catch (e) {
-    //         res.json(e)
-    //     }
-    // },
     postRoom: async (req, res) => {
         try {
             const { number, roomType, booking, price } = req.body

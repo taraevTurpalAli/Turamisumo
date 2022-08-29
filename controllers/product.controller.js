@@ -5,27 +5,45 @@ const Product = require("../Models/Product.model")
 module.exports.productController = {
     postProduct: async (req, res) => {
         try {
-            const { name, price, category, law } = req.body
+            const { name, price, category, law, image, title } = req.body
             
             const setCategory = await Category.findOne({ name: category })
-            
-            if (setCategory === null) {
-                const setCategory0 = await Category.create({
-                    name: category
-                })
+            const setProduct0 = await Product.findOne({name})
+            if (setProduct0 !== null) {
+                return(res.json('Продукт уже существует'))
+            }
+            if (setCategory !== null) {
                 const setProduct = await Product.create({
                     name,
                     price,
                     law,
-                    categoryId: setCategory0._id
+                    image,
+                    title,
+                    categoryId: setCategory._id
+                })
+                await Category.findByIdAndUpdate(setCategory._id, {
+                    $push: {
+                        productId: setProduct._id
+                    }
                 })
                 res.json(setProduct)
             } else {
+                const setCategory0 = await Category.create({
+                    name: category,
+                    productId: []
+                })
                 const setProduct = await Product.create({
                     name,
                     price,
                     law,
-                    categoryId: setCategory._id
+                    image,
+                    title,
+                    categoryId: setCategory0._id
+                })
+                await Category.findByIdAndUpdate(setCategory0._id, {
+                    $push: {
+                        productId: setProduct._id
+                    }
                 })
                 res.json(setProduct)
             }
@@ -52,14 +70,76 @@ module.exports.productController = {
             if (setProduct === null) {
                 return (res.json('Продукта не существует'))
             }
+            const setCategory = await Category.findById(setProduct.categoryId)
             await Product.findByIdAndRemove(setProduct._id)
-            const setProducts = await Product.find()
-            res.json(setProducts)
+            const setArr = setCategory.productId.filter((el) => {
+                return (String(el) !== String(setProduct._id))
+            })
+            console.log(setArr)
+            if (setArr[0]) {
+                await Category.findByIdAndUpdate(setCategory._id, {
+                    productId: setArr
+                })
+            } else {
+                await Category.findByIdAndRemove(setCategory._id)
+            }
+            res.json(setProduct)
         }
         catch (e) {
             res.json(e)
         }
     },
+
+    // deleteProduct: async (req, res) => {
+    //     try {
+    //         const { name } = req.params
+            
+    //         const setProduct = await Product.find({
+    //             name
+    //         })
+
+    //         const setCategory
+    //         const setCategory = await Category.find({ name:  })
+            
+    //         const setProductId = setProduct._id
+    //         const setCategoryId = setCategory[0]._id
+    //         await Category.findByIdAndUpdate(setCategoryId, {
+    //             $push: {
+    //                 productId: setProductId
+    //             }
+    //         })
+
+
+
+            // if (setCategory[0]) {
+            //     const setProductId = setProduct._id
+            //     const setCategoryId = setCategory[0]._id
+            //     await Category.findByIdAndUpdate(setCategoryId, {
+            //         $push: {
+            //             productId: setProductId
+            //         }
+            //     })
+            // } else {
+            //     const setCategory0 = await Category.create({
+            //         name: category,
+            //         productId: []
+            //     })
+            //     const setProductId = setProduct._id
+            //     const setCategoryId = setCategory0._id
+            //     await Category.findByIdAndUpdate(setCategoryId, {
+            //         $push: {
+            //             productId: setProductId
+            //         }
+            //     })
+            // }
+            // res.json(setProduct)
+        // }
+    //     catch (e) {
+    //         res.json(e)
+    //     }
+    // },
+
+
 
     postCategory: async (req, res) => {
         try {

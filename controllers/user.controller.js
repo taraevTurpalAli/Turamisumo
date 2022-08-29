@@ -25,7 +25,7 @@ module.exports.userController = {
                 Number(process.env.ROUNDS)
             );
 
-            const setRoomType = await RoomType.findOne({name: roomType})
+            const setRoomType = await RoomType.findById(roomType)
             const setRoomTypeId = String(setRoomType._id)
             const setRoomTypeCash = Number(setRoomType.price)
             
