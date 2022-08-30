@@ -1,6 +1,6 @@
 const Room = require('../Models/Room.model.js')
 const RoomType = require('../Models/RoomType.model.js')
-const User = require('../models/User.model.js')
+const User = require('../Models/User.model.js')
 
 module.exports.roomController = {
     postRoom: async (req, res) => {
