@@ -5,5 +5,4 @@ const { userController } = require("../controllers/user.controller")
 
 router.post('/table', tableController.postTable);
 
-
 module.exports = router;

@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const { subscribe } = require("../routes/room.route.js");
 const RoomType = require("../Models/RoomType.model.js");
 const Room = require("../Models/Room.model.js");
+const Cart = require("../Models/Cart.model.js");
 
 module.exports.userController = {
     addUser: async (req, res) => {
@@ -62,6 +63,9 @@ module.exports.userController = {
                 endData,
                 card
             });
+            await Cart.create({
+                userId: setUser._id,
+            })
             const payload = {
                 id: setUser._id,
                 login: setUser.login,
