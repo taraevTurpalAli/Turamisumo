@@ -60,6 +60,14 @@ module.exports.productController = {
             res.json(e)
         }
     },
+    getCategory: async (req, res) => {
+        try {
+            const setCategorys = await Category.find()
+            res.json(setCategorys)
+        } catch (e) {
+            res.json(e)
+        }
+    },
     deleteProduct: async (req, res) => {
         try {
             const { name } = req.params
