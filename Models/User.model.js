@@ -21,7 +21,8 @@ const userSchema = mongoose.Schema({
     room: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Room"
-    }
+    },
+    card: String
 });
 
 const User = mongoose.model('User', userSchema);

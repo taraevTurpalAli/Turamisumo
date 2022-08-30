@@ -1,16 +1,21 @@
+const Table = require("../Models/Table.model")
 
 module.exports.tableController = {
-    // postTable: async (req, res) => {
-    //     try {
-    //         for (let i = 0; i < 15; i++){
-
-    //         }
-    //         res.json('готово')
-    //     }
-    //     catch (e) {
-    //         res.json(e)
-    //     }
-    // },
+    postTable: async (req, res) => {
+        try {
+            for (let i = 0; i < 15; i++) {
+                console.log(i)
+                await Table.create({
+                    number: i,
+                    booking: false,
+                })
+            }
+            res.json('готово')
+        }
+        catch (e) {
+            res.json(e)
+        }
+    },
     // postRoomType: async (req, res) => {
     //     try {
     //         const { name, images, price } = req.body
