@@ -1,4 +1,4 @@
-const User = require("../models/User.model.js");
+const User = require("../Models/User.model.js");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -116,15 +116,14 @@ module.exports.userController = {
         });
     },
 
-    // getProfile: async (req, res) => {
-    //     try {
-    //         const profile = await User.findById(req.params.id
-    //         )
-    //         res.json(profile)
-    //     } catch (error) {
-    //         res.json("error");
-    //     }
-    // },
+    getUser: async (req, res) => {
+        try {
+            const setUser = await User.findById(req.params.userId)
+            res.json(setUser)
+        } catch (e) {
+            res.json(e);
+        }
+    },
     // getUsers: async (req, res) => {
     //     try {
     //         res.json(await User.find());
