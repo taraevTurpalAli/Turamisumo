@@ -64,7 +64,7 @@ module.exports.userController = {
             
             res.json(setUser);
         } catch (e) {
-            res.json(e);
+            res.json(e.message);
         }
     },
     login: async (req, res) => {
