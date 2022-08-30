@@ -9,7 +9,7 @@ const Room = require("../Models/Room.model.js");
 module.exports.userController = {
     addUser: async (req, res) => {
         try {
-            const { name, surname, phone, age, login, password, startData, endData } = req.body;
+            const { name, surname, phone, age, login, password, startData, endData, card } = req.body;
             const { roomType } = req.params
 
             const setLogin = await User.findOne({
@@ -59,10 +59,23 @@ module.exports.userController = {
                 cash: setRoomTypeCash,
                 room: setRoomId, 
                 startData, 
-                endData 
+                endData,
+                card
+            });
+            const payload = {
+                id: setUser._id,
+                login: setUser.login,
+            };
+    
+            const token = await jwt.sign(payload, process.env.SECRET_KEY, {
+                expiresIn: "24h",
+            })
+            
+            res.json({
+                token,
+                id: payload.id,
             });
             
-            res.json(setUser);
         } catch (e) {
             res.json(e);
         }
@@ -99,29 +112,29 @@ module.exports.userController = {
         });
     },
 
-    getProfile: async (req, res) => {
-        try {
-            const profile = await User.findById(req.params.id
-            )
-            res.json(profile)
-        } catch (error) {
-            res.json("error");
-        }
-    },
-    getUsers: async (req, res) => {
-        try {
-            res.json(await User.find());
-        } catch (error) {
-            res.json("error");
-        }
-    },
+    // getProfile: async (req, res) => {
+    //     try {
+    //         const profile = await User.findById(req.params.id
+    //         )
+    //         res.json(profile)
+    //     } catch (error) {
+    //         res.json("error");
+    //     }
+    // },
+    // getUsers: async (req, res) => {
+    //     try {
+    //         res.json(await User.find());
+    //     } catch (error) {
+    //         res.json("error");
+    //     }
+    // },
 
-    deleteUser: async (req, res) => {
-        try {
-            const dele = await User.findByIdAndRemove(req.params.id);
-            res.json("Юзер удален");
-        } catch (error) {
-            res.json("error");
-        }
-    },
+    // deleteUser: async (req, res) => {
+    //     try {
+    //         const dele = await User.findByIdAndRemove(req.params.id);
+    //         res.json("Юзер удален");
+    //     } catch (error) {
+    //         res.json("error");
+    //     }
+    // },
 };
