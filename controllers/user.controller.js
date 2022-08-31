@@ -10,9 +10,10 @@ const Cart = require("../Models/Cart.model.js");
 module.exports.userController = {
     addUser: async (req, res) => {
         try {
-            const { name, surname, phone, age, login, password, startData, endData, card } = req.body;
-            const { roomType } = req.params
+            const { name, surname, phone, age, login, password, startDate, endDate, card } = req.body;
 
+            console.log(startDate, endDate)
+            const { roomType } = req.params
             const setLogin = await User.findOne({
                 login
             })
@@ -49,7 +50,7 @@ module.exports.userController = {
             await Room.findByIdAndUpdate(setRoomId, {
                 booking: true
             })
-            
+
             const setUser = await User.create({ 
                 name, 
                 surname, 
@@ -59,10 +60,11 @@ module.exports.userController = {
                 password: hash, 
                 cash: setRoomTypeCash,
                 room: setRoomId, 
-                startData, 
-                endData,
+                startDate, 
+                endDate,
                 card
             });
+
             await Cart.create({
                 userId: setUser._id,
             })
@@ -74,7 +76,7 @@ module.exports.userController = {
             const token = await jwt.sign(payload, process.env.SECRET_KEY, {
                 expiresIn: "24h",
             })
-            console.log(token)
+
             res.json({
                 token,
                 id: payload.id,
@@ -118,6 +120,7 @@ module.exports.userController = {
 
     getUser: async (req, res) => {
         try {
+            console.log(req.params.userId)
             const setUser = await User.findById(req.params.userId)
             res.json(setUser)
         } catch (e) {
