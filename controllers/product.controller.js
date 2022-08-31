@@ -5,7 +5,7 @@ const Product = require("../Models/Product.model")
 module.exports.productController = {
     postProduct: async (req, res) => {
         try {
-            const { name, price, category, law, image, title } = req.body
+            const { name, price, category, law, image, description, title } = req.body
             
             const setCategory = await Category.findOne({ name: category })
             const setProduct0 = await Product.findOne({name})
@@ -18,7 +18,7 @@ module.exports.productController = {
                     price,
                     law,
                     image,
-                    title,
+                    description,
                     categoryId: setCategory._id
                 })
                 await Category.findByIdAndUpdate(setCategory._id, {
@@ -37,7 +37,7 @@ module.exports.productController = {
                     price,
                     law,
                     image,
-                    title,
+                    description,
                     categoryId: setCategory0._id
                 })
                 await Category.findByIdAndUpdate(setCategory0._id, {
