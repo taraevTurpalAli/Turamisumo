@@ -41,7 +41,9 @@ module.exports.cartController = {
 
             await Cart.findByIdAndUpdate(setCartId, {
                 $push: {
-                    products: product
+                    products: {
+                        productId: product
+                    }
                 },
                 mainPrice: setCart.mainPrice + setProduct.price
             })
@@ -65,131 +67,115 @@ module.exports.cartController = {
             const setCartId = String(setCart._id)
 
             const { product } = req.body
-            
+
             const setProduct = await Product.findById(product)
             const setProducts = setCart.products.filter((el) => {
-                return(String(el) !== String(setProduct._id))
+                return (String(el.productId) !== String(setProduct._id))
             })
-            
-            console.log(String(setCart.products))
-            console.log(String(setProducts))
-            
+
+            const setAmount = setCart.products.filter((el) => {
+                return (String(el.productId) === String(setProduct._id))
+            })
+            console.log(setAmount)
             await Cart.findByIdAndUpdate(setCartId, {
-                products: setProducts
+                products: setProducts,
+                mainPrice: setCart.mainPrice - (setProduct.price * setAmount[0].amount)
             })
-            
             const setCart0 = await Cart.findById(setCart._id)
-            
+
             res.json(setCart0)
         } catch (e) {
             res.json(e)
         }
     },
-        productClearCart: async (req, res) => {
-            try {
-                const { userId } = req.params
-                const setUser = await User.findById(userId)
-                const setCart = await Cart.findOne({
-                    userId: setUser._id
-                })
-                const setCartId = String(setCart._id)
+    productClearCart: async (req, res) => {
+        try {
+            const { userId } = req.params
+            const setUser = await User.findById(userId)
+            const setCart = await Cart.findOne({
+                userId: setUser._id
+            })
+            const setCartId = String(setCart._id)
 
-                const nullArr = setCart.products.filter((el) => false)
-                await Cart.findByIdAndUpdate(setCartId, {
-                    products: nullArr
-                })
-                const setCart0 = await Cart.find({
-                    userId: setUser._id
-                })
-                
-                res.json('Корзина успешно очищена')
-            } catch (e) {
-                res.json(e)
-            }
-        },
-    //     productIncCart: async (req, res) => {
-    //         try {
-    //             const { userId } = req.params
-    //             const setUser = await User.findById(userId)
-    //             const setCart = await Cart.find({
-    //                 userId: setUser._id
-    //             })
-    //             const setCartId = String(setCart[0]._id)
+            const nullArr = setCart.products.filter((el) => false)
+            await Cart.findByIdAndUpdate(setCartId, {
+                products: nullArr,
+                mainPrice: 0
+            })
+            const setCart0 = await Cart.find({
+                userId: setUser._id,
+            })
 
-    //             const { product } = req.body
+            res.json(setCart0)
+        } catch (e) {
+            res.json(e)
+        }
+    },
+    productIncCart: async (req, res) => {
+        try {
+            const { userId } = req.params
+            const setUser = await User.findById(userId)
+            const setCart = await Cart.findOne({
+                userId: setUser._id
+            })
+            const setCartId = String(setCart._id)
 
-    //             const setCart0 = await Cart.findById(setCartId)
-    //             const setProduct = await Product.findById(product)
+            const { product } = req.body
+            
+            const setProduct = await Product.findById(product)
+            
+            const setProducts = setCart.products.map((el) => {
+                if (String(el.productId) === String(setProduct._id)) {
+                    el.amount += 1
+                }
+                return el
+            })
 
-    //             if (setProduct.left < 1) {
-    //                 return res.json("Нет на складе")
-    //             }
+            await Cart.findByIdAndUpdate(setCartId, {
+                products: setProducts,
+                mainPrice: setCart.mainPrice + setProduct.price
+            })
+            const setCart0 = await Cart.findById(setCartId)
+            
+            res.json(setCart0)
+            
+        } catch (e) {
+            res.json(e)
+        }
+    },
+    productDecCart: async (req, res) => {
+        try {
+            const { userId } = req.params
+            const setUser = await User.findById(userId)
+            const setCart = await Cart.findOne({
+                userId: setUser._id
+            })
+            const setCartId = String(setCart._id)
 
-    //             const setProducts = setCart0.products.map((el) => {
-    //                 if (String(el.productId) === String(setProduct._id)) {
-    //                     el.amount += 1
-    //                 }
-    //                 return el
-    //             })
+            const { product } = req.body
 
+            const setProduct = await Product.findById(product)
 
-
-    //             await Cart.findByIdAndUpdate(setCartId, {
-    //                 products: setProducts
-    //             })
-
-    //             await Product.findByIdAndUpdate(product, {
-    //                 left: setProduct.left - 1
-    //             })
-
-    //             // res.json(setProducts)
-    //             res.json('+')
-
-    //         } catch (e) {
-    //             res.json(e)
-    //         }
-    //     },
-    //     productDecCart: async (req, res) => {
-    //         try {
-    //             const { userId } = req.params
-    //             const setUser = await User.findById(userId)
-    //             const setCart = await Cart.find({
-    //                 userId: setUser._id
-    //             })
-    //             const setCartId = String(setCart[0]._id)
-
-    //             const { product } = req.body
-
-    //             const setCart0 = await Cart.findById(setCartId)
-    //             const setProduct = await Product.findById(product)
-
-    //             if (setCart0.left < 1) {
-    //                 return res.json("Нет на складе")
-    //             }
-
-    //             const setProducts = setCart0.products.map((el) => {
-    //                 if (String(el.productId) === String(setProduct._id)) {
-    //                     el.amount -= 1
-    //                     return el
-    //                 }
-    //                 return el
-    //             })
+            const setProducts = setCart.products.map((el) => {
+                if (String(el.productId) === String(setProduct._id)) {
+                    el.amount -= 1
+                    return el
+                }
+                return el
+            })
 
 
 
-    //             await Cart.findByIdAndUpdate(setCartId, {
-    //                 products: setProducts
-    //             })
+            await Cart.findByIdAndUpdate(setCartId, {
+                products: setProducts,
+                mainPrice: setCart.mainPrice - setProduct.price
+            })
 
-    //             await Product.findByIdAndUpdate(product, {
-    //                 left: setProduct.left + 1
-    //             })
-
-    //             res.json('-')
-
-    //         } catch (e) {
-    //             res.json(e)
-    //         }
-    //     },
+            const setCart1 = await Cart.findById(setCartId)
+            res.json(setCart1)
+        } catch (e) {
+            res.json(e)
+        }
+    },
 
 }
