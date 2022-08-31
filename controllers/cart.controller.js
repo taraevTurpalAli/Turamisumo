@@ -1,16 +1,18 @@
 const Cart = require('../Models/Cart.model.js')
 const User = require('../Models/User.model')
 const Product = require('../Models/Product.model.js')
+const { findById } = require('../Models/User.model')
 
 module.exports.cartController = {
     getCart: async (req, res) => {
         try {
             const { userId } = req.params
             const setUser = await User.findById(userId)
-            const setCart = await Cart.findOne({
+            const setCart = await Cart.find({
                 userId: setUser._id
             })
-            res.json(setCart)
+            const setCartId = String(setCart[0]._id)
+            res.json(await Cart.findById(setCartId).populate('products'))
         } catch (e) {
             res.json(e)
         }
