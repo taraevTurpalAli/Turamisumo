@@ -16,8 +16,8 @@ const userSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
-    startData: String,
-    endData: String,
+    startDate: mongoose.SchemaTypes.Date,
+    endDate: mongoose.SchemaTypes.Date,
     room: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Room"
