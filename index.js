@@ -24,6 +24,9 @@ app.use(require('./routes/room.route'))
 app.use(require('./routes/product.route'))
 app.use(require('./routes/user.route.js'))
 app.use(require('./routes/admin.route'))
+app.use(require("./routes/table.route.js"));
+app.use(require("./routes/cart.route.js"));
+
 mongoose
   .connect(process.env.MONGO_SERVER)
   .then(() => console.log('Успешно соединились с сервером MongoDB'))
