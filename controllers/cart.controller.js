@@ -4,6 +4,34 @@ const Product = require('../Models/Product.model.js')
 const { findById } = require('../Models/User.model')
 
 module.exports.cartController = {
+    // buyCart: async (req, res) => {
+    //     try {
+    //         const { userId } = req.params
+    //         const setUser = await User.findById(userId)
+    //         const setCart = await Cart.findOne({
+    //             userId: setUser._id
+    //         }).populate('products.productId')
+
+    //         setCart.products.forEach((el) => {
+    //             setUser.cash.forEach((el) => {
+
+    //             })
+    //             // await User.findByIdAndUpdate(setCartId, {
+    //             //     $push: {
+    //             //         cash: {
+    //             //             name: String,
+    //             //             amount: Number,
+    //             //             price: Number
+    //             //         }
+    //             //     }
+    //             // })
+    //         });
+
+    //         res.json(setCart.products)
+    //     } catch (e) {
+    //         res.json(e)
+    //     }
+    // },
     getCart: async (req, res) => {
         try {
             const { userId } = req.params

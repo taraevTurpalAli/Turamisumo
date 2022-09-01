@@ -3,7 +3,7 @@ const Table = require("../Models/Table.model")
 module.exports.tableController = {
     postTable: async (req, res) => {
         try {
-            for (let i = 0; i < 15; i++) {
+            for (let i = 15; i < 16; i++) {
                 console.log(i)
                 await Table.create({
                     number: i,
@@ -16,6 +16,13 @@ module.exports.tableController = {
             res.json(e)
         }
     },
+    getTable: async (req, res) => {
+        try {
+            res.json(await Table.find())
+        } catch (e) {
+            res.json(e)
+        }
+    }
     // postRoomType: async (req, res) => {
     //     try {
     //         const { name, images, price } = req.body

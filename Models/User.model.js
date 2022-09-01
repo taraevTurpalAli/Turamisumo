@@ -7,10 +7,11 @@ const userSchema = mongoose.Schema({
     login: String,
     password: String,
     age: Number,
-    cash: {
-        type: Number,
-        default: 0
-    },
+    cash: [mongoose.Schema({
+        name: String,
+        amount: Number,
+        price: Number
+    })],
     vip: Boolean,
     isActive: {
         type: Boolean,
