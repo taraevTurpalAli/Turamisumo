@@ -12,7 +12,7 @@ module.exports.cartController = {
                 userId: setUser._id
             })
             const setCartId = String(setCart[0]._id)
-            res.json(await Cart.findById(setCartId).populate('products'))
+            res.json(await Cart.findById(setCartId).populate('products.productId'))
         } catch (e) {
             res.json(e)
         }
@@ -83,7 +83,7 @@ module.exports.cartController = {
             })
             const setCart0 = await Cart.findById(setCart._id)
 
-            res.json(setCart0)
+            res.json(await Cart.findById(setCart0).populate('products.productId'))
         } catch (e) {
             res.json(e)
         }
@@ -137,7 +137,7 @@ module.exports.cartController = {
             })
             const setCart0 = await Cart.findById(setCartId)
             
-            res.json(setCart0)
+            res.json(await Cart.findById(setCart0).populate('products.productId'))
             
         } catch (e) {
             res.json(e)
@@ -172,7 +172,7 @@ module.exports.cartController = {
             })
 
             const setCart1 = await Cart.findById(setCartId)
-            res.json(setCart1)
+            res.json(await Cart.findById(setCart1).populate('products.productId'))
         } catch (e) {
             res.json(e)
         }
