@@ -21,7 +21,7 @@ module.exports.cartController = {
                 products: nullArr,
                 mainPrice: 0
             })
-            const setCart0 = await Cart.find({
+            const setCart0 = await Cart.findOne({
                 userId: setUser._id,
             })
 
@@ -128,7 +128,7 @@ module.exports.cartController = {
                 products: nullArr,
                 mainPrice: 0
             })
-            const setCart0 = await Cart.find({
+            const setCart0 = await Cart.findOne({
                 userId: setUser._id,
             })
 
