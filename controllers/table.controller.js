@@ -1,6 +1,13 @@
 const Table = require("../Models/Table.model")
 
 module.exports.tableController = {
+    bookingTable: async (req, res) => {
+        try {
+            
+        } catch (e) {
+            res.json(e)
+        }
+    },
     postTable: async (req, res) => {
         try {
             for (let i = 15; i < 16; i++) {

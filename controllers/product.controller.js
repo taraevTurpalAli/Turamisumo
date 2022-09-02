@@ -68,6 +68,14 @@ module.exports.productController = {
             res.json(e)
         }
     },
+    getCategoryProducts: async (req, res) => {
+        try {
+            const {categoryId} = req.params
+            res.json(await Category.findById(categoryId).populate('productId'))
+        } catch (e) {
+            res.json(e)
+        }
+    },
     deleteProduct: async (req, res) => {
         try {
             const { name } = req.params

@@ -8,7 +8,7 @@ router.delete('/cart/:userId', cartController.productDeleteCart);
 router.delete('/cart/clear/:userId', cartController.productClearCart);
 router.patch('/cart/inc/:userId', cartController.productIncCart)
 router.patch('/cart/dec/:userId', cartController.productDecCart)
-// router.post('/cart/buy/:userId', cartController.buyCart)
+router.post('/cart/buy/:userId', cartController.buyCart)
 
 // router.post('/room-type', roomController.postRoomType);
 
